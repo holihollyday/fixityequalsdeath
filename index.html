@@ -17,7 +17,24 @@
 <link rel="stylesheet" href="css/animate.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 </head>
+<style>
+#moveDiv {
+  position: absolute;
+  z-index: 9;
+  background-color: black;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #01F2FD;
+}
 
+#moveDivheader {
+  padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #000000;
+  color: #fff;
+}
+</style>
 <body>
 
 <!-- Header Section -->
@@ -48,7 +65,14 @@
         – the largest and most comprehensive biennale celebrating digital art today.<br><br>
         This exhibition takes place both on an online <a href="pavilion.html">pavilion</a> and offline embassy (Space-P11 Chicago).<br><br></h3>
         <h4>November 1st, 2019 through March 1st, 2020.</h4>
-
+      </div>
+      <div id="moveDiv">
+        <div id="moveDivheader"><h5>F=D irl exhibition: Monday, January 27 - Friday, February 28.</h5></div>
+          <h5><li>Opening reception:Friday, January 31, 6 - 9 pm.
+          <br><li>Where:Space P11 (55 E Randolph Street, Pedway Level, Chicago)
+          <br><small>*Awesome performances by artists:
+          <br>Wanbli Gamache, Eduardo F. Rosario, Austin Gladney, and Sid Branca.</small>
+        </h5>
       </div>
 </section>
 <!-- footer section -->
@@ -75,5 +99,50 @@
 <script src="js/retina.min.js"></script>
 <script src="js/modernizr.js"></script>
 <script src="js/main.js"></script>
+<script>
+//Make the DIV element draggagle:
+dragElement(document.getElementById("moveDiv"));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    e.preventDefault();
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+</script>
 </body>
 </html>
